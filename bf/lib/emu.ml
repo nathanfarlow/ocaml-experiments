@@ -13,7 +13,7 @@ type state = { data : int array; mutable ptr : int }
 exception Out_of_bounds
 
 let split_loop program =
-  let rec aux program acc depth : char list * char list =
+  let rec aux program acc depth =
     match program with
     | [] -> failwith "Unmatched ["
     | '[' :: tl -> aux tl ('[' :: acc) (depth + 1)
@@ -68,5 +68,4 @@ let rec run state program =
         run state loop;
         run state program)
 
-let create_state ?(num_cells = 30000) () =
-  { data = Array.make num_cells 0; ptr = 0 }
+let create_state num_cells = { data = Array.make num_cells 0; ptr = 0 }
