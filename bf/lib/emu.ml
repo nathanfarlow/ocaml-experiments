@@ -10,8 +10,6 @@ type op =
 type program = op list
 type state = { data : int array; mutable ptr : int }
 
-exception Out_of_bounds
-
 let split_loop program =
   let rec aux program acc depth =
     match program with
@@ -44,14 +42,12 @@ let compile program =
 let rec run state program =
   match program with
   | [] -> ()
-  | MOVE_RIGHT :: rest when state.ptr + 1 < Array.length state.data ->
+  | MOVE_RIGHT :: rest ->
       state.ptr <- state.ptr + 1;
       run state rest
-  | MOVE_RIGHT :: _ -> raise Out_of_bounds
-  | MOVE_LEFT :: rest when state.ptr > 0 ->
+  | MOVE_LEFT :: rest ->
       state.ptr <- state.ptr - 1;
       run state rest
-  | MOVE_LEFT :: _ -> raise Out_of_bounds
   | INC :: rest ->
       state.data.(state.ptr) <- state.data.(state.ptr) + 1;
       run state rest
